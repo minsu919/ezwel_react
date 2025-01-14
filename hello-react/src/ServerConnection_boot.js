@@ -78,6 +78,24 @@ function ServerConnection_boot(){
             setMessage( JSON.stringify(response.data) );
         }); //then
     }
+
+    const ajaxbtn6 = async function(){
+        let playerArray = [];
+        let player1 = {"player":"messi", "goal":50};
+        let player2 = {"player":"son", "goal":60};
+        let player3 = {"player":"kane", "goal":40};
+        playerArray.push(player1);
+        playerArray.push(player2);
+        playerArray.push(player3);
+
+        let response = 
+        await axios.post("http://localhost:9090/helloajaxobjectarray", {"playerArray" : JSON.stringify(playerArray)});
+        if (response.data.fullName != "이름모름"){
+            let response2 = 
+            await axios.post("http://localhost:9090/helloajaxparam", {"id" : response.data.player, "pw" : response.data.goal});
+            setMessage("찾은 선수정보 : " + JSON.stringify(response.data) + " , 새롭게 등록 : " + JSON.stringify(response2.data));
+        }
+    }
     return (
 <div>
 <h3>서버랑 통신하는 중입니다.</h3>
@@ -88,6 +106,7 @@ function ServerConnection_boot(){
 <input type="button" value="ajax(post파라미터)요청" onClick={ajaxbtn3} />
 <input type="button" value="ajax(배열파라미터-GET)요청" onClick={ajaxbtn4} />
 <input type="button" value="ajax(객체배열전달있는post)요청" onClick={ajaxbtn5}/>
+<input type="button" value="async/await요청" onClick={ajaxbtn6}/>
 </div>
     );
 }
